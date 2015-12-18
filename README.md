@@ -15,7 +15,7 @@ It is used with ui-router - parameters are saved and load from URL.
  - Add module to your project: ```angular.module("DemoApp", ["seSearch"])...```
 
  - In controller call ```SeSearchHelperService```: ```SeSearchHelperService.handleSearch($scope, goToServer, controller);``` where:
-   - ```goToServer``` is function that accepts single parameter - filter, should call the server and return promise
+   - ```goToServer``` is function that accepts single parameter - filter, should call the server and return promise. Server should return data in following format: http://docs.sesearch.apiary.io/#reference/0/search/list-all-members
    - ```controller``` is controller istself (```this```) - it is used to get filter (```controller.filter```) and to store results (```controller.searchResults```). These names are configurable in handleSearch arguments: ```function handleSearch($scope, sourceFunc, holder, filterFieldName, resultsFieldName)```
  - In template:
    - add filters (and define how often to search - ```ng-model-options```): ```<input type="text" data-ng-model="searchCtrl.filter.q" data-ng-model-options="{debounce: { 'default': 500, 'blur': 0 }}">```
