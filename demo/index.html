@@ -1,0 +1,56 @@
+<html data-ng-app="seSearchDemoApp">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title>seSearchDemoApp</title>
+
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/css/bootstrap.css" />
+	</head>
+	<body>
+		See network activity when you stop typing. Paging is always on page 1 because server is mocked by apiary.
+		<div data-ui-view="content">
+			<input type="text" data-ng-model="searchCtrl.filter.q"
+				data-ng-model-options="{debounce: { 'default': 500, 'blur': 0 }}">
+
+			<!-- se-loading adds .loading to table, but min-height does not affect table (table height is get from header + rows) -->
+			<div data-se-loading="searchCtrl.searchResults.loaded">
+				<table class="table se-animation-show" data-ng-hide="searchCtrl.searchResults.response.length === 0">
+					<thead>
+						<tr>
+							<th>username</th>
+							<th>firstName</th>
+							<th>lastName</th>
+							<th>enabled</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr data-ng-repeat="member in searchCtrl.searchResults.response track by member.id"
+							class="se-animation-showhide">
+							<td>{{member.username}}</td>
+							<td>{{member.firstName}}</td>
+							<td>{{member.lastName}}</td>
+							<td>{{member.enabled}}</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div data-se-search-paging="searchCtrl.searchResults"></div>
+		</div>
+
+		<script src="https://code.jquery.com/jquery-2.1.4.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/3.10.1/lodash.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/restangular/1.5.1/restangular.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-translate/2.8.1/angular-translate.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.8/angular-animate.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/js/bootstrap.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.15/angular-ui-router.js"></script>
+
+		<script src="../src/seSearchModule.js"></script>
+		<script src="../src/seSearchHelperService.js"></script>
+		<script src="../src/seSearchPagingDirective.js"></script>
+		<script src="../src/seSearchRestangularResponse.js"></script>
+		<script src="../gen/seSearchHtml.js"></script>
+
+		<script src="scripts/searchCtrl.js"></script>
+	</body>
+</html>
