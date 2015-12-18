@@ -1,0 +1,41 @@
+{
+  "name": "angular-se-search",
+  "version": "0.0.1",
+  "dependencies": {
+    "angular": "~1.4.3",
+    "lodash": "~3.10.1",
+    "restangular": "~1.5.1",
+    "angular-ui-router": "~0.2.15"
+  },
+  "devDependencies": {
+    "angular-mocks": "~1.4.3",
+    "angular-scenario": "~1.4.3"
+  },
+  "homepage": "https://github.com/setelis/angular-se-search",
+  "authors": [
+    "Plamen Tanov <ptanov@setelis.com>"
+  ],
+  "description": "Search related tools used in many Setelis projects.",
+  "main": [
+     "src/seSearchModule.js",
+     "src/seSearchHelperService.js",
+     "src/seSearchPagingDirective.js",
+     "src/seSearchRestangularResponse.js"
+  ],
+
+  "keywords": [
+    "angular",
+    "search",
+    "paging"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests",
+    "demo",
+    "flow"
+  ]
+}
