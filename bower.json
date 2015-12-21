@@ -1,6 +1,6 @@
 {
   "name": "angular-se-search",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "dependencies": {
     "angular": "~1.4.3",
     "lodash": "~3.10.1",
@@ -20,7 +20,8 @@
      "src/seSearchModule.js",
      "src/seSearchHelperService.js",
      "src/seSearchPagingDirective.js",
-     "src/seSearchRestangularResponse.js"
+     "src/seSearchRestangularResponse.js",
+     "gen/seSearchHtml.js"
   ],
 
   "keywords": [
