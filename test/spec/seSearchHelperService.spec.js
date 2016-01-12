@@ -87,7 +87,7 @@ describe("SeSearchHelperService", function () {
 		}));
 
 		it("should support custom filterFieldName (url>filter)", inject(function () {
-			SeSearchHelperService.handleSearch($scope, sourceFunc, holder, "newFilterName");
+			SeSearchHelperService.handleSearch($scope, sourceFunc, holder, {filterFieldName: "newFilterName"});
 			$state.params.some = "hello";
 			$state.params.other = "notincluded";
 			$state.current.params = {
@@ -106,7 +106,7 @@ describe("SeSearchHelperService", function () {
 				name: "some",
 				value: "hello"
 			};
-			SeSearchHelperService.handleSearch($scope, sourceFunc, holder, "otherFilterName");
+			SeSearchHelperService.handleSearch($scope, sourceFunc, holder, {filterFieldName: "otherFilterName"});
 			holder.otherFilterName = {};
 			holder.otherFilterName[PARAMETER.name] = PARAMETER.value;
 
@@ -196,7 +196,8 @@ describe("SeSearchHelperService", function () {
 			};
 			holder.searchResultCustomName = {};
 
-			SeSearchHelperService.handleSearch($scope, sourceFunc, holder, "filterCustomName", "searchResultCustomName");
+			SeSearchHelperService.handleSearch($scope, sourceFunc, holder,
+				{filterFieldName: "filterCustomName", resultsFieldName: "searchResultCustomName"});
 
 			expect(sourceFunc.calls.count()).toBe(0);
 			expect(holder.searchResultCustomName.loaded).toBeUndefined();

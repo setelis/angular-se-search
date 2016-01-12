@@ -1,21 +1,24 @@
 angular.module("seSearch.helper", ["ui.router"]).service("SeSearchHelperService", function($state, $location) {
 	"use strict";
+	var DEFAULTS = {
+		filterFieldName: "filter",
+		resultsFieldName: "searchResults"
+	};
 
 	var service = this;
 
 	function attachMethods() {
-		service.handleSearch = function($scope, sourceFunc, holder, filterFieldName, resultsFieldName) {
-			filterFieldName = filterFieldName || "filter";
-			resultsFieldName = resultsFieldName || "searchResults";
+		service.handleSearch = function($scope, sourceFunc, holder, options) {
+			var effectiveOptions = _.assign({}, DEFAULTS, options);
 
 			// params should be configured in $state provider!
 			function urlToFilter() {
 				// if you change this implementation - remove data-ce-undefined-if-empty
-				holder[filterFieldName] = _.pick($state.params, _.keys($state.current.params));
+				holder[effectiveOptions.filterFieldName] = _.pick($state.params, _.keys($state.current.params));
 			}
 			function filterToUrl() {
 				// if you change this implementation - remove data-ce-undefined-if-empty
-				$location.search(_.pick(holder[filterFieldName], _.keys($state.current.params)));
+				$location.search(_.pick(holder[effectiveOptions.filterFieldName], _.keys($state.current.params)));
 			}
 
 			function searchResults(response) {
@@ -50,27 +53,27 @@ angular.module("seSearch.helper", ["ui.router"]).service("SeSearchHelperService"
 			}
 			function fetch(newFilter) {
 				filterToUrl();
-				if (holder[resultsFieldName]) {
-					holder[resultsFieldName].loaded = false;
+				if (holder[effectiveOptions.resultsFieldName]) {
+					holder[effectiveOptions.resultsFieldName].loaded = false;
 				}
 				return sourceFunc(newFilter).then(function(response) {
 					var result = searchResults(response);
-					holder[resultsFieldName] = result;
+					holder[effectiveOptions.resultsFieldName] = result;
 					return result;
 				});
 			}
 			$scope.$watchCollection(function() {return $state.params;}, urlToFilter);
-			$scope.$watchCollection(function() {return holder[filterFieldName];}, fetch);
+			$scope.$watchCollection(function() {return holder[effectiveOptions.filterFieldName];}, fetch);
 
 			return {
 				search: function() {
-					return fetch(holder[filterFieldName]);
+					return fetch(holder[effectiveOptions.filterFieldName]);
 				},
 				ensureResults: function(response) {
 					if (response.response.length === 0 && response.pages.prev &&
 						response.pages.prev.from !== response.response.navigation.from) {
 						// to make it string (if not string - search will be toggled twice)
-						holder[filterFieldName].from = "" + response.pages.prev.from;
+						holder[effectiveOptions.filterFieldName].from = "" + response.pages.prev.from;
 					}
 					return response;
 				}
