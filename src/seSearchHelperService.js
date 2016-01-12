@@ -9,15 +9,30 @@ angular.module("seSearch.helper", ["ui.router"]).provider("SeSearchHelperService
 				var effectiveOptions = _.assign({}, CONFIGURED_OPTIONS, options);
 
 				// params should be configured in $state provider!
-				function urlToFilter() {
-					// if you change this implementation - remove data-ce-undefined-if-empty
-					holder[effectiveOptions.filterFieldName] = _.pick($state.params, _.keys($state.current.params));
-				}
-				function filterToUrl() {
-					// if you change this implementation - remove data-ce-undefined-if-empty
-					$location.search(_.pick(holder[effectiveOptions.filterFieldName], _.keys($state.current.params)));
+
+				function convertTypes(paramsConfiguration, paramValues, methodName) {
+					function convertValue(value, config) {
+						config = config || {};
+						var converter = effectiveOptions.converters[config.$$type];
+						if (!converter) {
+							throw "SeSearchHelperService: urlToFilter: no converter for type: "+config.$$type;
+						}
+						return converter[methodName](value);
+					}
+					var result = {};
+					_.forEach(paramsConfiguration, function(nextValue, nextKey) {
+						var value = paramValues[nextKey];
+						result[nextKey] = convertValue(value, nextValue);
+					});
+					return result;
 				}
 
+				function urlToFilter() {
+					holder[effectiveOptions.filterFieldName] = convertTypes($state.current.params, $state.params, "fromString");
+				}
+				function filterToUrl() {
+					$location.search(convertTypes($state.current.params, holder[effectiveOptions.filterFieldName], "toString"));
+				}
 
 				function fetch(newFilter) {
 					filterToUrl();
@@ -85,12 +100,46 @@ angular.module("seSearch.helper", ["ui.router"]).provider("SeSearchHelperService
 			}
 
 			return result;
+		},
+		converters: {
+			DATE: {
+				fromString: function(asString) {
+					if (!asString) {
+						return;
+					}
+					return new Date(asString);
+				},
+				toString: function(value) {
+					if (!value) {
+						return;
+					}
+					return value.toISOString();
+				}
+			}
+		}
+	};
+	// How to set undefined key in object definition?
+	DEFAULT_OPTIONS.converters[undefined] = {
+		fromString: function(asString) {
+			if (asString === "") {
+				return;
+			}
+			return asString;
+		},
+		toString: function(value) {
+			if (value === "") {
+				return;
+			}
+			return value;
 		}
 	};
 	var customizedOptions;
 
-	provider.setDefaultOptions = function(options) {
+	provider.setCustomizedOptions = function(options) {
 		customizedOptions = options;
+	};
+	provider.getDefaultOptions = function() {
+		return angular.copy(DEFAULT_OPTIONS);
 	};
 	provider.$get = ["$state", "$location", function SeSearchHelperServiceFactory($state, $location) {
 		var effectiveOptions = _.assign({}, DEFAULT_OPTIONS, customizedOptions);

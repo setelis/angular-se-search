@@ -16,6 +16,12 @@ describe("SeSearchHelperService", function () {
 			$scope = _$rootScope_.$new();
 			$q = _$q_;
 			$location = _$location_;
+
+			spyOn($location, "search").and.callFake(function(params) {
+				_.forEach(params, function(nextValue, nextKey) {
+					$state.params[nextKey] = nextValue;
+				});
+			});
 		}));
 
 		beforeEach(inject(function() {
@@ -47,6 +53,22 @@ describe("SeSearchHelperService", function () {
 				expect(holder.filter).not.toEqual($state.params);
 				expect(holder.filter).toEqual(_.omit($state.params, "other"));
 			}));
+			it("should convert date from url to filter", inject(function () {
+				SeSearchHelperService.handleSearch($scope, sourceFunc, holder);
+				$state.params.some = "2016-01-12T16:29:31.787Z";
+				$state.current.params = {
+					some: {
+						$$type: "DATE"
+					}
+				};
+
+				expect(holder.filter).not.toEqual({some: new Date($state.params.some)});
+
+				$scope.$digest();
+
+				expect(holder.filter).toEqual({some: new Date($state.params.some)});
+			}));
+
 			it("should return search handler", inject(function () {
 				holder.filter = {
 					hello: "world"
@@ -79,7 +101,13 @@ describe("SeSearchHelperService", function () {
 					name: "some",
 					value: "hello"
 				};
+				$state.current.params = {};
+				$state.current.params[PARAMETER.name] = undefined;
+
 				SeSearchHelperService.handleSearch($scope, sourceFunc, holder);
+				// url to model:
+				$scope.$digest();
+
 				holder.filter = {};
 				holder.filter[PARAMETER.name] = PARAMETER.value;
 
@@ -88,9 +116,30 @@ describe("SeSearchHelperService", function () {
 				$scope.$digest();
 
 				expect($state.params).not.toBe(holder.filter);
-				expect($state.params).toEqual(holder.filter);
+				expect($state.params).toEqual({some: "hello"});
 			}));
 
+			it("should update url when filter is changed - date support", inject(function () {
+				$state.current.params = {
+					some: {
+						$$type: "DATE"
+					}
+				};
+
+				SeSearchHelperService.handleSearch($scope, sourceFunc, holder);
+				// url to model:
+				$scope.$digest();
+
+				holder.filter = {
+					some: new Date()
+				};
+
+				var expected = {some: holder.filter.some.toISOString()};
+
+				expect($state.params).not.toEqual(expected);
+				$scope.$digest();
+				expect($state.params).toEqual(expected);
+			}));
 			it("should support custom filterFieldName (url>filter)", inject(function () {
 				SeSearchHelperService.handleSearch($scope, sourceFunc, holder, {filterFieldName: "newFilterName"});
 				$state.params.some = "hello";
@@ -496,7 +545,7 @@ describe("SeSearchHelperService", function () {
 
 		beforeEach(function() {
 			module(function(SeSearchHelperServiceProvider) {
-				SeSearchHelperServiceProvider.setDefaultOptions({filterFieldName: "newFilterName"});
+				SeSearchHelperServiceProvider.setCustomizedOptions({filterFieldName: "newFilterName"});
 			});
 		});
 		initVariables();
