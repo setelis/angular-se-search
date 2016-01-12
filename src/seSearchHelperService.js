@@ -2,7 +2,37 @@ angular.module("seSearch.helper", ["ui.router"]).service("SeSearchHelperService"
 	"use strict";
 	var DEFAULTS = {
 		filterFieldName: "filter",
-		resultsFieldName: "searchResults"
+		resultsFieldName: "searchResults",
+		resultProcessor: function searchResults(response) {
+			var result = {
+				loaded: true,
+				response: response,
+				pages: {
+					prev: null,
+					next: null,
+					all: []
+				}
+			};
+
+			for(var i = 0; i < response.navigation.count;i += response.navigation.max) {
+				result.pages.all.push({from: i});
+			}
+			result.pages.prev = angular.copy(_.findLast(result.pages.all, function(page) {
+				return page.from < response.navigation.from;
+			}));
+			if (!result.pages.prev) {
+				delete result.pages.prev;
+			}
+
+			result.pages.next = angular.copy(_.find(result.pages.all, function(page) {
+				return page.from > response.navigation.from;
+			}));
+			if (!result.pages.next) {
+				delete result.pages.next;
+			}
+
+			return result;
+		}
 	};
 
 	var service = this;
@@ -21,43 +51,14 @@ angular.module("seSearch.helper", ["ui.router"]).service("SeSearchHelperService"
 				$location.search(_.pick(holder[effectiveOptions.filterFieldName], _.keys($state.current.params)));
 			}
 
-			function searchResults(response) {
-				var result = {
-					loaded: true,
-					response: response,
-					pages: {
-						prev: null,
-						next: null,
-						all: []
-					}
-				};
 
-				for(var i = 0; i < response.navigation.count;i += response.navigation.max) {
-					result.pages.all.push({from: i});
-				}
-				result.pages.prev = angular.copy(_.findLast(result.pages.all, function(page) {
-					return page.from < response.navigation.from;
-				}));
-				if (!result.pages.prev) {
-					delete result.pages.prev;
-				}
-
-				result.pages.next = angular.copy(_.find(result.pages.all, function(page) {
-					return page.from > response.navigation.from;
-				}));
-				if (!result.pages.next) {
-					delete result.pages.next;
-				}
-
-				return result;
-			}
 			function fetch(newFilter) {
 				filterToUrl();
 				if (holder[effectiveOptions.resultsFieldName]) {
 					holder[effectiveOptions.resultsFieldName].loaded = false;
 				}
 				return sourceFunc(newFilter).then(function(response) {
-					var result = searchResults(response);
+					var result = effectiveOptions.resultProcessor(response);
 					holder[effectiveOptions.resultsFieldName] = result;
 					return result;
 				});
