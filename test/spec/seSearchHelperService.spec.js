@@ -53,6 +53,42 @@ describe("SeSearchHelperService", function () {
 				expect(holder.filter).not.toEqual($state.params);
 				expect(holder.filter).toEqual(_.omit($state.params, "other"));
 			}));
+			iit("should update filter when state.params are changed (include params defined in parent states)", inject(function () {
+				SeSearchHelperService.handleSearch($scope, sourceFunc, holder);
+				$state.params.some = "hello";
+				$state.params.other = "notincluded";
+				$state.current.params = {
+					some: undefined
+				};
+				$state.current.name = "a.b.c";
+				var EXPECTED_STATES = {
+					"a": {
+						params: {
+							other: undefined
+						}
+					},
+					"a.b": {
+
+					}
+				};
+				var CALLED_STATES = {};
+				spyOn($state, "get").and.callFake(function(name) {
+					expect(EXPECTED_STATES[name]).not.toBeUndefined();
+					if (!CALLED_STATES[name]) {
+						CALLED_STATES[name] = true;
+					}
+					return EXPECTED_STATES[name];
+				});
+
+				expect(holder.filter).not.toEqual($state.params);
+
+				$scope.$digest();
+
+				expect(holder.filter).toEqual($state.params);
+				_.forEach(EXPECTED_STATES, function(nextValue, nextKey) {
+					expect(CALLED_STATES[nextKey]).toBe(true);
+				});
+			}));
 			it("should convert date from url to filter", inject(function () {
 				SeSearchHelperService.handleSearch($scope, sourceFunc, holder);
 				$state.params.some = "2016-01-12T16:29:31.787Z";
@@ -118,7 +154,6 @@ describe("SeSearchHelperService", function () {
 				expect($state.params).not.toBe(holder.filter);
 				expect($state.params).toEqual({some: "hello"});
 			}));
-
 			it("should update url when filter is changed - date support", inject(function () {
 				$state.current.params = {
 					some: {

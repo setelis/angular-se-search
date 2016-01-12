@@ -10,7 +10,7 @@ angular.module("seSearch.helper", ["ui.router"]).provider("SeSearchHelperService
 
 				// params should be configured in $state provider!
 
-				function convertTypes(paramsConfiguration, paramValues, methodName) {
+				function convertTypes(paramValues, methodName) {
 					function convertValue(value, config) {
 						config = config || {};
 						var converter = effectiveOptions.converters[config.$$type];
@@ -19,8 +19,34 @@ angular.module("seSearch.helper", ["ui.router"]).provider("SeSearchHelperService
 						}
 						return converter[methodName](value);
 					}
+					function getParamsConfiguration() {
+						function getParentNames() {
+							var splitted = $state.current.name.split(".");
+
+							var result = [];
+							var lastValue = "";
+							_.forEach(splitted, function(nextValue, nextIndex) {
+								if (nextIndex === splitted.length - 1) {
+									// do not include current state
+									return false;
+								}
+								lastValue = lastValue + nextValue;
+								result.push(lastValue);
+
+								lastValue = lastValue + ".";
+							});
+							return result;
+						}
+						var result = {};
+						// get parent value, than overide by current
+						_.forEach(getParentNames(), function(nextValue) {
+							_.assign(result, $state.get(nextValue).params);
+						});
+						_.assign(result, $state.current.params);
+						return result;
+					}
 					var result = {};
-					_.forEach(paramsConfiguration, function(nextValue, nextKey) {
+					_.forEach(getParamsConfiguration(), function(nextValue, nextKey) {
 						var value = paramValues[nextKey];
 						result[nextKey] = convertValue(value, nextValue);
 					});
@@ -28,10 +54,10 @@ angular.module("seSearch.helper", ["ui.router"]).provider("SeSearchHelperService
 				}
 
 				function urlToFilter() {
-					holder[effectiveOptions.filterFieldName] = convertTypes($state.current.params, $state.params, "fromString");
+					holder[effectiveOptions.filterFieldName] = convertTypes($state.params, "fromString");
 				}
 				function filterToUrl() {
-					$location.search(convertTypes($state.current.params, holder[effectiveOptions.filterFieldName], "toString"));
+					$location.search(convertTypes(holder[effectiveOptions.filterFieldName], "toString"));
 				}
 
 				function fetch(newFilter) {
