@@ -141,6 +141,20 @@ angular.module("seSearch.helper", ["ui.router"]).provider("SeSearchHelperService
 					}
 					return value.toISOString();
 				}
+			},
+			JSON: {
+				fromString: function(asString) {
+					if (!asString) {
+						return;
+					}
+					return angular.fromJson(asString);
+				},
+				toString: function(value) {
+					if (!value) {
+						return;
+					}
+					return angular.toJson(value, false);
+				}
 			}
 		}
 	};
