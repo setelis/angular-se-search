@@ -1,4 +1,4 @@
-describe("SeSearchHelperService", function () {
+describe("SeSearchHelperService", function() {
 	"use strict";
 
 	var SeSearchHelperService;
@@ -32,12 +32,11 @@ describe("SeSearchHelperService", function () {
 		}));
 	}
 
-
-	describe("Default configuration", function () {
+	describe("Default configuration", function() {
 		initVariables();
 
-		describe("handleSearch", function () {
-			it("should update filter when state.params are changed (include params defined in current state)", inject(function () {
+		describe("handleSearch", function() {
+			it("should update filter when state.params are changed (include params defined in current state)", inject(function() {
 				SeSearchHelperService.handleSearch($scope, sourceFunc, holder);
 				$state.params.some = "hello";
 				$state.params.other = "notincluded";
@@ -53,7 +52,7 @@ describe("SeSearchHelperService", function () {
 				expect(holder.filter).not.toEqual($state.params);
 				expect(holder.filter).toEqual(_.omit($state.params, "other"));
 			}));
-			iit("should update filter when state.params are changed (include params defined in parent states)", inject(function () {
+			iit("should update filter when state.params are changed (include params defined in parent states)", inject(function() {
 				SeSearchHelperService.handleSearch($scope, sourceFunc, holder);
 				$state.params.some = "hello";
 				$state.params.other = "notincluded";
@@ -89,7 +88,7 @@ describe("SeSearchHelperService", function () {
 					expect(CALLED_STATES[nextKey]).toBe(true);
 				});
 			}));
-			it("should convert date from url to filter", inject(function () {
+			it("should convert date from url to filter", inject(function() {
 				SeSearchHelperService.handleSearch($scope, sourceFunc, holder);
 				$state.params.some = "2016-01-12T16:29:31.787Z";
 				$state.current.params = {
@@ -105,7 +104,7 @@ describe("SeSearchHelperService", function () {
 				expect(holder.filter).toEqual({some: new Date($state.params.some)});
 			}));
 
-			it("should return search handler", inject(function () {
+			it("should return search handler", inject(function() {
 				holder.filter = {
 					hello: "world"
 				};
@@ -116,7 +115,7 @@ describe("SeSearchHelperService", function () {
 				$scope.$digest();
 				expect(sourceFunc.calls.count()).toBe(1);
 				expect(sourceFunc).toHaveBeenCalledWith(holder.filter);
-				deferred.resolve({navigation:{}, data: []});
+				deferred.resolve({navigation: {}, data: []});
 				$scope.$digest();
 				expect(holder.searchResults.loaded).toBe(true);
 
@@ -127,12 +126,12 @@ describe("SeSearchHelperService", function () {
 				expect(sourceFunc.calls.count()).toBe(1);
 				expect(sourceFunc).toHaveBeenCalledWith(holder.filter);
 
-				deferred.resolve({navigation:{}, data: []});
+				deferred.resolve({navigation: {}, data: []});
 				$scope.$digest();
 				expect(holder.searchResults.loaded).toBe(true);
 			}));
 
-			it("should update url when filter is changed", inject(function () {
+			it("should update url when filter is changed", inject(function() {
 				var PARAMETER = {
 					name: "some",
 					value: "hello"
@@ -154,7 +153,7 @@ describe("SeSearchHelperService", function () {
 				expect($state.params).not.toBe(holder.filter);
 				expect($state.params).toEqual({some: "hello"});
 			}));
-			it("should update url when filter is changed - date support", inject(function () {
+			it("should update url when filter is changed - date support", inject(function() {
 				$state.current.params = {
 					some: {
 						$$type: "DATE"
@@ -175,7 +174,7 @@ describe("SeSearchHelperService", function () {
 				$scope.$digest();
 				expect($state.params).toEqual(expected);
 			}));
-			it("should support custom filterFieldName (url>filter)", inject(function () {
+			it("should support custom filterFieldName (url>filter)", inject(function() {
 				SeSearchHelperService.handleSearch($scope, sourceFunc, holder, {filterFieldName: "newFilterName"});
 				$state.params.some = "hello";
 				$state.params.other = "notincluded";
@@ -190,7 +189,7 @@ describe("SeSearchHelperService", function () {
 				expect(holder.newFilterName).not.toEqual($state.params);
 				expect(holder.newFilterName).toEqual(_.omit($state.params, "other"));
 			}));
-			it("should support custom filterFieldName (filter>url)", inject(function () {
+			it("should support custom filterFieldName (filter>url)", inject(function() {
 				var PARAMETER = {
 					name: "some",
 					value: "hello"
@@ -206,7 +205,7 @@ describe("SeSearchHelperService", function () {
 				expect($state.params).not.toBe(holder.otherFilterName);
 				expect($state.params).toEqual(holder.otherFilterName);
 			}));
-			it("should fetch data initially", inject(function () {
+			it("should fetch data initially", inject(function() {
 				holder.filter = {
 					hello: "world"
 				};
@@ -221,7 +220,7 @@ describe("SeSearchHelperService", function () {
 				expect(sourceFunc).toHaveBeenCalledWith(holder.filter);
 			}));
 
-			it("should fetch data when filter is changed", inject(function () {
+			it("should fetch data when filter is changed", inject(function() {
 				SeSearchHelperService.handleSearch($scope, sourceFunc, holder);
 				holder.filter = {
 					hello: "world"
@@ -234,7 +233,7 @@ describe("SeSearchHelperService", function () {
 				expect(sourceFunc.calls.count()).toBe(1);
 				expect(sourceFunc).toHaveBeenCalledWith(holder.filter);
 			}));
-			it("handle loading flag with no searchResult", inject(function () {
+			it("handle loading flag with no searchResult", inject(function() {
 				holder.filter = {
 					hello: "world"
 				};
@@ -251,12 +250,12 @@ describe("SeSearchHelperService", function () {
 				expect(holder.searchResults).toBeUndefined();
 				expect(deferred.promise.then.calls.count()).toBe(1);
 
-				deferred.resolve({navigation:{}, data: []});
+				deferred.resolve({navigation: {}, data: []});
 				$scope.$digest();
 
 				expect(holder.searchResults.loaded).toBe(true);
 			}));
-			it("handle loaded flag with searchResult", inject(function () {
+			it("handle loaded flag with searchResult", inject(function() {
 				holder.filter = {
 					hello: "world"
 				};
@@ -274,12 +273,12 @@ describe("SeSearchHelperService", function () {
 				expect(holder.searchResults.loaded).toBe(false);
 				expect(deferred.promise.then.calls.count()).toBe(1);
 
-				deferred.resolve({navigation:{}, data: []});
+				deferred.resolve({navigation: {}, data: []});
 				$scope.$digest();
 				expect(holder.searchResults.loaded).toBe(true);
 			}));
 
-			it("should support custom resultsFieldName", inject(function () {
+			it("should support custom resultsFieldName", inject(function() {
 				holder.filterCustomName = {
 					hello: "world"
 				};
@@ -298,15 +297,15 @@ describe("SeSearchHelperService", function () {
 				expect(holder.searchResultCustomName.loaded).toBe(false);
 				expect(deferred.promise.then.calls.count()).toBe(1);
 
-				deferred.resolve({navigation:{}, data: []});
+				deferred.resolve({navigation: {}, data: []});
 				$scope.$digest();
 				expect(holder.searchResultCustomName.loaded).toBe(true);
 			}));
 
-			describe("searchResults", function () {
-				it("should add prev link if from is different than 0", inject(function () {
+			describe("searchResults", function() {
+				it("should add prev link if from is different than 0", inject(function() {
 					var RESPONSE = {
-						navigation:{from: 2,max: 2,count: 10},
+						navigation: {from: 2,max: 2,count: 10},
 						data: []
 					};
 
@@ -324,9 +323,9 @@ describe("SeSearchHelperService", function () {
 						}
 					});
 				}));
-				it("should not add prev link if from is 0", inject(function () {
+				it("should not add prev link if from is 0", inject(function() {
 					var RESPONSE = {
-						navigation:{from: 0,max: 2,count: 10},
+						navigation: {from: 0,max: 2,count: 10},
 						data: []
 					};
 
@@ -344,9 +343,9 @@ describe("SeSearchHelperService", function () {
 					});
 				}));
 
-				it("should handle negative prev.from and wrong offseted 'from'", inject(function () {
+				it("should handle negative prev.from and wrong offseted 'from'", inject(function() {
 					var RESPONSE = {
-						navigation:{from: 1,max: 2,count: 10},
+						navigation: {from: 1,max: 2,count: 10},
 						data: []
 					};
 
@@ -365,9 +364,9 @@ describe("SeSearchHelperService", function () {
 					});
 				}));
 
-				it("should handle negative prev when from is outside", inject(function () {
+				it("should handle negative prev when from is outside", inject(function() {
 					var RESPONSE = {
-						navigation:{from: 120,max: 2,count: 10},
+						navigation: {from: 120,max: 2,count: 10},
 						data: []
 					};
 
@@ -384,9 +383,9 @@ describe("SeSearchHelperService", function () {
 						}
 					});
 				}));
-				it("should add next if there is more results", inject(function () {
+				it("should add next if there is more results", inject(function() {
 					var RESPONSE = {
-						navigation:{from: 4,max: 2,count: 10},
+						navigation: {from: 4,max: 2,count: 10},
 						data: []
 					};
 
@@ -404,9 +403,9 @@ describe("SeSearchHelperService", function () {
 						}
 					});
 				}));
-				it("should not add next if there is no more results", inject(function () {
+				it("should not add next if there is no more results", inject(function() {
 					var RESPONSE = {
-						navigation:{from: 8,max: 2,count: 10},
+						navigation: {from: 8,max: 2,count: 10},
 						data: []
 					};
 
@@ -423,9 +422,9 @@ describe("SeSearchHelperService", function () {
 						}
 					});
 				}));
-				it("should not add next if there is no more results and from is outside", inject(function () {
+				it("should not add next if there is no more results and from is outside", inject(function() {
 					var RESPONSE = {
-						navigation:{from: 10,max: 2,count: 10},
+						navigation: {from: 10,max: 2,count: 10},
 						data: []
 					};
 
@@ -443,9 +442,9 @@ describe("SeSearchHelperService", function () {
 					});
 				}));
 
-				it("should add pages - last page full", inject(function () {
+				it("should add pages - last page full", inject(function() {
 					var RESPONSE = {
-						navigation:{from: 0,max: 2,count: 10},
+						navigation: {from: 0,max: 2,count: 10},
 						data: []
 					};
 
@@ -462,9 +461,9 @@ describe("SeSearchHelperService", function () {
 						}
 					});
 				}));
-				it("should add pages - last page with one result", inject(function () {
+				it("should add pages - last page with one result", inject(function() {
 					var RESPONSE = {
-						navigation:{from: 0,max: 2,count: 9},
+						navigation: {from: 0,max: 2,count: 9},
 						data: []
 					};
 
@@ -482,9 +481,9 @@ describe("SeSearchHelperService", function () {
 					});
 				}));
 
-				it("should add pages - custom size", inject(function () {
+				it("should add pages - custom size", inject(function() {
 					var RESPONSE = {
-						navigation:{from: 6,max: 3,count: 12},
+						navigation: {from: 6,max: 3,count: 12},
 						data: []
 					};
 
@@ -506,8 +505,8 @@ describe("SeSearchHelperService", function () {
 			});
 
 		});
-		describe("ensureResults", function () {
-			it("should have ensure", inject(function () {
+		describe("ensureResults", function() {
+			it("should have ensure", inject(function() {
 				holder.filter = {
 					from: "8"
 				};
@@ -516,7 +515,7 @@ describe("SeSearchHelperService", function () {
 				expect(angular.isFunction(searchHandler.ensureResults)).toBe(true);
 			}));
 
-			it("should change filter", inject(function () {
+			it("should change filter", inject(function() {
 				holder.filter = {
 					from: "8"
 				};
@@ -530,7 +529,7 @@ describe("SeSearchHelperService", function () {
 
 				expect(holder.filter.from).toBe("6");
 			}));
-			it("should not change filter if from is equal", inject(function () {
+			it("should not change filter if from is equal", inject(function() {
 				holder.filter = {
 					from: "8"
 				};
@@ -544,7 +543,7 @@ describe("SeSearchHelperService", function () {
 
 				expect(holder.filter.from).toBe("8");
 			}));
-			it("should not change filter if no prev page", inject(function () {
+			it("should not change filter if no prev page", inject(function() {
 				holder.filter = {
 					from: "8"
 				};
@@ -558,7 +557,7 @@ describe("SeSearchHelperService", function () {
 
 				expect(holder.filter.from).toBe("8");
 			}));
-			it("should not change filter if there are results", inject(function () {
+			it("should not change filter if there are results", inject(function() {
 				holder.filter = {
 					from: "8"
 				};
@@ -576,7 +575,7 @@ describe("SeSearchHelperService", function () {
 		});
 	});
 
-	describe("Custom configuration", function () {
+	describe("Custom configuration", function() {
 
 		beforeEach(function() {
 			module(function(SeSearchHelperServiceProvider) {
@@ -585,8 +584,8 @@ describe("SeSearchHelperService", function () {
 		});
 		initVariables();
 
-		describe("handleSearch", function () {
-			it("should support custom filterFieldName (url>filter)", inject(function () {
+		describe("handleSearch", function() {
+			it("should support custom filterFieldName (url>filter)", inject(function() {
 				SeSearchHelperService.handleSearch($scope, sourceFunc, holder);
 				$state.params.some = "hello";
 				$state.params.other = "notincluded";

@@ -8,7 +8,7 @@
 /* global module: false */
 /* global process: false */
 /* global require: false */
-module.exports = function (grunt) {
+module.exports = function(grunt) {
 	"use strict";
 	var nowAsString = grunt.template.today("yyyymmddHHMMss");
 
@@ -38,13 +38,15 @@ module.exports = function (grunt) {
 					"karma:unit",
 					// "htmlangular:index",
 					"htmlangular:continuous",
-					"flow:app"
+					"flow:app",
+					"jscs"
 				];
 			} else {
 				return [
 					"jshint",
 					"karma:unit",
-					"flow:app"
+					"flow:app",
+					"jscs"
 				];
 			}
 		}
@@ -67,7 +69,7 @@ module.exports = function (grunt) {
 			watch: {
 				js: {
 					files: ["<%= files.scripts %>"],
-					tasks: ["newer:jshint:all", "karma:continuous", "flow:app"],
+					tasks: ["newer:jshint:all", "karma:continuous", "flow:app", "jscs:appScripts"],
 					options: {
 						event: ["changed", "added", "deleted"],
 						livereload: true
@@ -83,7 +85,7 @@ module.exports = function (grunt) {
 				},
 				jsUnitTest: {
 					files: ["<%= files.unittests %>"],
-					tasks: ["newer:jshint:test", "karma:continuous"],
+					tasks: ["newer:jshint:test", "karma:continuous", "jscs:tests"],
 					options: {
 						event: ["changed", "added", "deleted"]
 					}
@@ -117,6 +119,14 @@ module.exports = function (grunt) {
 					src: ["<%= files.unittests %>"]
 				}
 			},
+			jscs: {
+				appScripts: {
+					src: "<%= files.scripts %>"
+				},
+				tests: {
+					src: "<%= files.unittests %>"
+				}
+			},
 			// Empties folders to start fresh
 			clean: {
 				dist: {
@@ -133,7 +143,7 @@ module.exports = function (grunt) {
 
 			replace: {
 				flowReportError: {
-					options : {
+					options: {
 						patterns: [
 							{
 								match: /^\s+return done\(false\);$/m,
@@ -156,13 +166,13 @@ module.exports = function (grunt) {
 					options: {
 						patterns: [
 							{
-								match: new RegExp("return \\{version: \"_VERSION_\", buildDate: \"_BUILD_DATE_\", "+
+								match: new RegExp("return \\{version: \"_VERSION_\", buildDate: \"_BUILD_DATE_\", " +
 									"buildDateAsString: \"_BUILD_DATE_AS_STRING_\", commit: \"_COMMIT_\"\\};", "mg"),
-								replacement: "\treturn {\n\t\tversion: \""+"<%= githash.main.tag %>"+
-									"\",\n\t\tBUILD_NUMBER: \""+ ("0000000"+process.env.BUILD_NUMBER).substr(-7)+
-									"\",\n\t\tbuildDate: \""+ nowAsString+
-									"\",\n\t\tbranch: \""+ "<%= githash.main.branch %>"+
-									"\",\n\t\tcommit: \""+"<%= githash.main.hash %>"+"\"\n\t};"
+								replacement: "\treturn {\n\t\tversion: \"" + "<%= githash.main.tag %>" +
+									"\",\n\t\tBUILD_NUMBER: \"" + ("0000000" + process.env.BUILD_NUMBER).substr(-7) +
+									"\",\n\t\tbuildDate: \"" + nowAsString +
+									"\",\n\t\tbranch: \"" + "<%= githash.main.branch %>" +
+									"\",\n\t\tcommit: \"" + "<%= githash.main.hash %>" + "\"\n\t};"
 							}
 
 						]
@@ -175,7 +185,6 @@ module.exports = function (grunt) {
 					]
 				}
 			},
-
 
 			// Copies remaining files to places other tasks can use
 			copy: {
@@ -262,17 +271,17 @@ module.exports = function (grunt) {
 						"src/**/*.js": ["coverage"]
 					},
 					// add the coverage plugin
-					plugins: [ "karma-jasmine", "karma-firefox-launcher", "karma-chrome-launcher", "karma-phantomjs-launcher", "karma-coverage", "karma-junit-reporter"],
+					plugins: ["karma-jasmine", "karma-firefox-launcher", "karma-chrome-launcher", "karma-phantomjs-launcher", "karma-coverage", "karma-junit-reporter"],
 					// add coverage to reporters
 					reporters: ["dots", "coverage", "junit"],
 					// tell karma how you want the coverage results
 					coverageReporter: {
-						reporters : [
-							{ type : "html", dir : "coverage/" },
-							{ type : "cobertura", file: "coverage.xml" }
+						reporters: [
+							{type: "html", dir: "coverage/"},
+							{type: "cobertura", file: "coverage.xml"}
 						]
 					},
-					junitReporter : {
+					junitReporter: {
 						outputFile: "target/test-results.xml",
 						suite: ""
 					}
@@ -286,16 +295,16 @@ module.exports = function (grunt) {
 					wrapping: {
 						"tr": "<table>{0}</table>"
 					},
-					w3clocal: process.env.SESEARCH_W3C_LOCAL_URL?process.env.SESEARCH_W3C_LOCAL_URL:null,
+					w3clocal: process.env.SESEARCH_W3C_LOCAL_URL ? process.env.SESEARCH_W3C_LOCAL_URL : null,
 					//i'm not sure why in local instalation these errors exists:
-					relaxerror: process.env.SESEARCH_W3C_LOCAL_URL?[
+					relaxerror: process.env.SESEARCH_W3C_LOCAL_URL ? [
 						"The date input type is not supported in all browsers. Please be sure to test, and consider using a polyfill.",
 
 						"The Content-Type was text/html. Using the HTML parser.",
 						"Using the schema for HTML5 + SVG 1.1 + MathML 3.0 + RDFa Lite 1.1.",
 						"Attribute data-ng-attr-height not allowed on element rect at this point.",
 						"Attribute data-ng-attr-y not allowed on element rect at this point."
-					]:[]
+					] : []
 				},
 				continuous: {
 					options: {
@@ -329,7 +338,7 @@ module.exports = function (grunt) {
 				}
 			},
 			exec: {
-				stopFlow: "node_modules/grunt-flow-type-check/bin/"+process.platform+"/flow stop"
+				stopFlow: "node_modules/grunt-flow-type-check/bin/" + process.platform + "/flow stop"
 			},
 			githash: {
 				options: {},

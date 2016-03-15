@@ -1,4 +1,4 @@
-angular.module("seSearch.paging", ["seSearch.html"]).directive("seSearchPaging", function () {
+angular.module("seSearch.paging", ["seSearch.html"]).directive("seSearchPaging", function() {
 	"use strict";
 	return {
 		restrict: "A",

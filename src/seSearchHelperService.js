@@ -15,7 +15,7 @@ angular.module("seSearch.helper", ["ui.router"]).provider("SeSearchHelperService
 						config = config || {};
 						var converter = effectiveOptions.converters[config.$$type];
 						if (!converter) {
-							throw "SeSearchHelperService: urlToFilter: no converter for type: "+config.$$type;
+							throw "SeSearchHelperService: urlToFilter: no converter for type: " + config.$$type;
 						}
 						return converter[methodName](value);
 					}
@@ -108,7 +108,7 @@ angular.module("seSearch.helper", ["ui.router"]).provider("SeSearchHelperService
 				}
 			};
 
-			for(var i = 0; i < response.navigation.count;i += response.navigation.max) {
+			for (var i = 0; i < response.navigation.count; i += response.navigation.max) {
 				result.pages.all.push({from: i});
 			}
 			result.pages.prev = angular.copy(_.findLast(result.pages.all, function(page) {
