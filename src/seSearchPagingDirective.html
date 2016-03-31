@@ -9,7 +9,7 @@
 <!--		<li class="disabled" data-ng-if="seSearchPaging.pages.dotsAfterFirst"><a>...</a></li>-->
 		<li data-ng-repeat="page in seSearchPaging.pages.all track by $index" data-ng-class="{'active': seSearchPaging.response.navigation.from === page.from,
 																							 'disabled': page.edgeHidden}">
-			<a data-ng-if="!page.hide" data-ui-sref=".(page)">{{$index + 1}}</a>
+			<a data-ng-if="!page.hidden" data-ui-sref=".(page)">{{$index + 1}}</a>
 			<a data-ng-if="page.edgeHidden">...</a>
 		</li>
 <!--		<li data-ng-if="seSearchPaging.pages.dotsBeforeLast"><span class="pagination-dots">...</span></li>-->
