@@ -525,7 +525,7 @@ describe("SeSearchHelperService", function() {
 						navigation: {from: 6, max: 3, count: 12},
 						data: []
 					};
-					SeSearchHelperService.handleSearch($scope, sourceFunc, holder, {maximumNumberOfPages: 4});
+					SeSearchHelperService.handleSearch($scope, sourceFunc, holder, {paging: {maximumNumberOfPages: 4}});
 					$scope.$digest();
 					deferred.resolve(RESPONSE);
 					$scope.$digest();
@@ -545,7 +545,7 @@ describe("SeSearchHelperService", function() {
 						navigation: {from: 0, max: 3, count: 21},
 						data: []
 					};
-					SeSearchHelperService.handleSearch($scope, sourceFunc, holder, {maximumNumberOfPages: 4});
+					SeSearchHelperService.handleSearch($scope, sourceFunc, holder, {paging: {maximumNumberOfPages: 4}});
 					$scope.$digest();
 					deferred.resolve(RESPONSE);
 					$scope.$digest();
@@ -566,7 +566,7 @@ describe("SeSearchHelperService", function() {
 						navigation: {from: 3, max: 3, count: 21},
 						data: []
 					};
-					SeSearchHelperService.handleSearch($scope, sourceFunc, holder, {maximumNumberOfPages: 4});
+					SeSearchHelperService.handleSearch($scope, sourceFunc, holder, {paging: {maximumNumberOfPages: 4}});
 					$scope.$digest();
 					deferred.resolve(RESPONSE);
 					$scope.$digest();
@@ -588,7 +588,7 @@ describe("SeSearchHelperService", function() {
 						navigation: {from: 6, max: 3, count: 21},
 						data: []
 					};
-					SeSearchHelperService.handleSearch($scope, sourceFunc, holder, {maximumNumberOfPages: 4});
+					SeSearchHelperService.handleSearch($scope, sourceFunc, holder, {paging: {maximumNumberOfPages: 4}});
 					$scope.$digest();
 					deferred.resolve(RESPONSE);
 					$scope.$digest();
@@ -610,7 +610,7 @@ describe("SeSearchHelperService", function() {
 						navigation: {from: 9, max: 3, count: 21},
 						data: []
 					};
-					SeSearchHelperService.handleSearch($scope, sourceFunc, holder, {maximumNumberOfPages: 4});
+					SeSearchHelperService.handleSearch($scope, sourceFunc, holder, {paging: {maximumNumberOfPages: 4}});
 					$scope.$digest();
 					deferred.resolve(RESPONSE);
 					$scope.$digest();
@@ -632,7 +632,7 @@ describe("SeSearchHelperService", function() {
 						navigation: {from: 18, max: 3, count: 21},
 						data: []
 					};
-					SeSearchHelperService.handleSearch($scope, sourceFunc, holder, {maximumNumberOfPages: 4});
+					SeSearchHelperService.handleSearch($scope, sourceFunc, holder, {paging: {maximumNumberOfPages: 4}});
 					$scope.$digest();
 					deferred.resolve(RESPONSE);
 					$scope.$digest();
@@ -653,7 +653,7 @@ describe("SeSearchHelperService", function() {
 						navigation: {from: 15, max: 3, count: 21},
 						data: []
 					};
-					SeSearchHelperService.handleSearch($scope, sourceFunc, holder, {maximumNumberOfPages: 4});
+					SeSearchHelperService.handleSearch($scope, sourceFunc, holder, {paging: {maximumNumberOfPages: 4}});
 					$scope.$digest();
 					deferred.resolve(RESPONSE);
 					$scope.$digest();
@@ -675,7 +675,7 @@ describe("SeSearchHelperService", function() {
 						navigation: {from: 15, max: 3, count: 21},
 						data: []
 					};
-					SeSearchHelperService.handleSearch($scope, sourceFunc, holder, {numberOfPagesAtStart: 3, numberOfPagesAtEnd: 3});
+					SeSearchHelperService.handleSearch($scope, sourceFunc, holder, {paging: {numberOfPagesAtStart: 3, numberOfPagesAtEnd: 3}});
 					$scope.$digest();
 					deferred.resolve(RESPONSE);
 					$scope.$digest();
@@ -692,12 +692,13 @@ describe("SeSearchHelperService", function() {
 						}
 					});
 				}));
-				it("should not mark pages as hidden if middle buffer is large enough", inject(function() {
+
+				it("should fill out the maximum number of pages", inject(function() {
 					var RESPONSE = {
-						navigation: {from: 15, max: 3, count: 21},
+						navigation: {from: 15, max: 3, count: 24},
 						data: []
 					};
-					SeSearchHelperService.handleSearch($scope, sourceFunc, holder, {bufferOfCurrentPage: 5});
+					SeSearchHelperService.handleSearch($scope, sourceFunc, holder, {paging: {maximumNumberOfPages: 7}});
 					$scope.$digest();
 					deferred.resolve(RESPONSE);
 					$scope.$digest();
@@ -707,10 +708,10 @@ describe("SeSearchHelperService", function() {
 						pages: {
 							prev: {from: 12, hidden: false, edgeHidden: false},
 							next: {from: 18, hidden: false, edgeHidden: false},
-							all: [{from: 0, hidden: false, edgeHidden: false}, {from: 3, hidden: false, edgeHidden: false},
-									{from: 6, hidden: false, edgeHidden: false}, {from: 9, hidden: false, edgeHidden: false},
+							all: [{from: 0, hidden: false, edgeHidden: false}, {from: 3, hidden: true, edgeHidden: true},
+									{from: 6, hidden: true, edgeHidden: false}, {from: 9, hidden: false, edgeHidden: false},
 									{from: 12, hidden: false, edgeHidden: false}, {from: 15, hidden: false, edgeHidden: false},
-									{from: 18, hidden: false, edgeHidden: false}]
+									{from: 18, hidden: false, edgeHidden: false}, {from: 21, hidden: false, edgeHidden: false}]
 						}
 					});
 				}));

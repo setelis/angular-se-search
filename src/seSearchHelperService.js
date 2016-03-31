@@ -6,7 +6,7 @@ angular.module("seSearch.helper", ["ui.router"]).provider("SeSearchHelperService
 
 		function attachMethods() {
 			service.handleSearch = function($scope, sourceFunc, holder, options) {
-				var effectiveOptions = _.assign({}, CONFIGURED_OPTIONS, options);
+				var effectiveOptions = _.merge({}, CONFIGURED_OPTIONS, options);
 
 				// params should be configured in $state provider!
 
@@ -97,10 +97,11 @@ angular.module("seSearch.helper", ["ui.router"]).provider("SeSearchHelperService
 	var DEFAULT_OPTIONS = {
 		filterFieldName: "filter",
 		resultsFieldName: "searchResults",
-		maximumNumberOfPages: 15,
-		numberOfPagesAtStart: 1,
-		numberOfPagesAtEnd: 1,
-		bufferOfCurrentPage: 1,
+		paging: {
+			maximumNumberOfPages: 15,
+			numberOfPagesAtStart: 1,
+			numberOfPagesAtEnd: 1
+		},
 		resultProcessor: function searchResults(response, effectiveOptions) {
 			var result = {
 				loaded: true,
@@ -112,22 +113,25 @@ angular.module("seSearch.helper", ["ui.router"]).provider("SeSearchHelperService
 				}
 			};
 			function handlePaging() {
-				if (result.pages.all.length > effectiveOptions.maximumNumberOfPages) {
+				var bufferOfCurrentPage = Math.floor((effectiveOptions.paging.maximumNumberOfPages -
+														effectiveOptions.paging.numberOfPagesAtStart -
+														effectiveOptions.paging.numberOfPagesAtEnd) / 2);
+				if (result.pages.all.length > effectiveOptions.paging.maximumNumberOfPages) {
 					var currentPageNumber = response.navigation.from / response.navigation.max + 1;
 					var lastPageNumber = Math.ceil(response.navigation.count / response.navigation.max);
 					// whether to put dots after first page; +/-1 because of zero-based index
-					if (currentPageNumber > (effectiveOptions.numberOfPagesAtStart + effectiveOptions.bufferOfCurrentPage + 1)) {
-						var startOfLeading = effectiveOptions.numberOfPagesAtStart;
+					if (currentPageNumber > (effectiveOptions.paging.numberOfPagesAtStart + bufferOfCurrentPage + 1)) {
+						var startOfLeading = effectiveOptions.paging.numberOfPagesAtStart;
 						result.pages.all[startOfLeading].edgeHidden = true;
-						for (var k = startOfLeading; k < (currentPageNumber - effectiveOptions.bufferOfCurrentPage - 1); k++) {
+						for (var k = startOfLeading; k < (currentPageNumber - bufferOfCurrentPage - 1); k++) {
 							result.pages.all[k].hidden = true;
 						}
 					}
 					// whether to put dots before last page
-					if ((lastPageNumber - currentPageNumber) > (effectiveOptions.numberOfPagesAtEnd + effectiveOptions.bufferOfCurrentPage)) {
-						var startOfTrailing = (currentPageNumber + effectiveOptions.bufferOfCurrentPage);
+					if ((lastPageNumber - currentPageNumber) > (effectiveOptions.paging.numberOfPagesAtEnd + bufferOfCurrentPage)) {
+						var startOfTrailing = (currentPageNumber + bufferOfCurrentPage);
 						result.pages.all[startOfTrailing].edgeHidden = true;
-						for (var l = startOfTrailing; l < (lastPageNumber - effectiveOptions.numberOfPagesAtEnd); l++) {
+						for (var l = startOfTrailing; l < (lastPageNumber - effectiveOptions.paging.numberOfPagesAtEnd); l++) {
 							result.pages.all[l].hidden = true;
 						}
 					}
