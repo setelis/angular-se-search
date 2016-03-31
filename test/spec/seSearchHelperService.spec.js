@@ -52,7 +52,7 @@ describe("SeSearchHelperService", function() {
 				expect(holder.filter).not.toEqual($state.params);
 				expect(holder.filter).toEqual(_.omit($state.params, "other"));
 			}));
-			iit("should update filter when state.params are changed (include params defined in parent states)", inject(function() {
+			it("should update filter when state.params are changed (include params defined in parent states)", inject(function() {
 				SeSearchHelperService.handleSearch($scope, sourceFunc, holder);
 				$state.params.some = "hello";
 				$state.params.other = "notincluded";
@@ -317,9 +317,11 @@ describe("SeSearchHelperService", function() {
 						loaded: true,
 						response: RESPONSE,
 						pages: {
-							all: [{from: 0}, {from: 2}, {from: 4}, {from: 6}, {from: 8}],
-							prev: {from: 0},
-							next: {from: 4}
+							all: [{from: 0, hidden: false, edgeHidden: false},
+								{from: 2, hidden: false, edgeHidden: false}, {from: 4, hidden: false, edgeHidden: false},
+								{from: 6, hidden: false, edgeHidden: false}, {from: 8, hidden: false, edgeHidden: false}],
+							prev: {from: 0, hidden: false, edgeHidden: false},
+							next: {from: 4, hidden: false, edgeHidden: false}
 						}
 					});
 				}));
@@ -337,8 +339,10 @@ describe("SeSearchHelperService", function() {
 						loaded: true,
 						response: RESPONSE,
 						pages: {
-							all: [{from: 0}, {from: 2}, {from: 4}, {from: 6}, {from: 8}],
-							next: {from: 2}
+							all: [{from: 0, hidden: false, edgeHidden: false}, {from: 2, hidden: false, edgeHidden: false},
+								{from: 4, hidden: false, edgeHidden: false}, {from: 6, hidden: false, edgeHidden: false},
+								{from: 8, hidden: false, edgeHidden: false}],
+							next: {from: 2, hidden: false, edgeHidden: false}
 						}
 					});
 				}));
@@ -357,9 +361,11 @@ describe("SeSearchHelperService", function() {
 						loaded: true,
 						response: RESPONSE,
 						pages: {
-							all: [{from: 0}, {from: 2}, {from: 4}, {from: 6}, {from: 8}],
-							prev: {from: 0},
-							next: {from: 2}
+							all: [{from: 0, hidden: false, edgeHidden: false}, {from: 2, hidden: false, edgeHidden: false},
+								{from: 4, hidden: false, edgeHidden: false}, {from: 6, hidden: false, edgeHidden: false},
+								{from: 8, hidden: false, edgeHidden: false}],
+							prev: {from: 0, hidden: false, edgeHidden: false},
+							next: {from: 2, hidden: false, edgeHidden: false}
 						}
 					});
 				}));
@@ -378,8 +384,10 @@ describe("SeSearchHelperService", function() {
 						loaded: true,
 						response: RESPONSE,
 						pages: {
-							all: [{from: 0}, {from: 2}, {from: 4}, {from: 6}, {from: 8}],
-							prev: {from: 8}
+							all: [{from: 0, hidden: false, edgeHidden: false}, {from: 2, hidden: false, edgeHidden: false},
+								{from: 4, hidden: false, edgeHidden: false}, {from: 6, hidden: false, edgeHidden: false},
+								{from: 8, hidden: false, edgeHidden: false}],
+							prev: {from: 8, hidden: false, edgeHidden: false}
 						}
 					});
 				}));
@@ -397,9 +405,11 @@ describe("SeSearchHelperService", function() {
 						loaded: true,
 						response: RESPONSE,
 						pages: {
-							prev: {from: 2},
-							all: [{from: 0}, {from: 2}, {from: 4}, {from: 6}, {from: 8}],
-							next: {from: 6}
+							prev: {from: 2, hidden: false, edgeHidden: false},
+							all: [{from: 0, hidden: false, edgeHidden: false}, {from: 2, hidden: false, edgeHidden: false},
+							{from: 4, hidden: false, edgeHidden: false}, {from: 6, hidden: false, edgeHidden: false},
+							{from: 8, hidden: false, edgeHidden: false}],
+							next: {from: 6, hidden: false, edgeHidden: false}
 						}
 					});
 				}));
@@ -417,8 +427,10 @@ describe("SeSearchHelperService", function() {
 						loaded: true,
 						response: RESPONSE,
 						pages: {
-							prev: {from: 6},
-							all: [{from: 0}, {from: 2}, {from: 4}, {from: 6}, {from: 8}]
+							prev: {from: 6, hidden: false, edgeHidden: false},
+							all: [{from: 0, hidden: false, edgeHidden: false}, {from: 2, hidden: false, edgeHidden: false},
+								{from: 4, hidden: false, edgeHidden: false}, {from: 6, hidden: false, edgeHidden: false},
+								{from: 8, hidden: false, edgeHidden: false}]
 						}
 					});
 				}));
@@ -436,8 +448,10 @@ describe("SeSearchHelperService", function() {
 						loaded: true,
 						response: RESPONSE,
 						pages: {
-							prev: {from: 8},
-							all: [{from: 0}, {from: 2}, {from: 4}, {from: 6}, {from: 8}]
+							prev: {from: 8, hidden: false, edgeHidden: false},
+							all: [{from: 0, hidden: false, edgeHidden: false}, {from: 2, hidden: false, edgeHidden: false},
+								{from: 4, hidden: false, edgeHidden: false}, {from: 6, hidden: false, edgeHidden: false},
+								{from: 8, hidden: false, edgeHidden: false}]
 						}
 					});
 				}));
@@ -456,8 +470,10 @@ describe("SeSearchHelperService", function() {
 						loaded: true,
 						response: RESPONSE,
 						pages: {
-							next: {from: 2},
-							all: [{from: 0}, {from: 2}, {from: 4}, {from: 6}, {from: 8}]
+							next: {from: 2, hidden: false, edgeHidden: false},
+							all: [{from: 0, hidden: false, edgeHidden: false}, {from: 2, hidden: false, edgeHidden: false},
+								{from: 4, hidden: false, edgeHidden: false}, {from: 6, hidden: false, edgeHidden: false},
+								{from: 8, hidden: false, edgeHidden: false}]
 						}
 					});
 				}));
@@ -475,8 +491,10 @@ describe("SeSearchHelperService", function() {
 						loaded: true,
 						response: RESPONSE,
 						pages: {
-							next: {from: 2},
-							all: [{from: 0}, {from: 2}, {from: 4}, {from: 6}, {from: 8}]
+							next: {from: 2, hidden: false, edgeHidden: false},
+							all: [{from: 0, hidden: false, edgeHidden: false}, {from: 2, hidden: false, edgeHidden: false},
+								{from: 4, hidden: false, edgeHidden: false}, {from: 6, hidden: false, edgeHidden: false},
+								{from: 8, hidden: false, edgeHidden: false}]
 						}
 					});
 				}));
@@ -495,9 +513,204 @@ describe("SeSearchHelperService", function() {
 						loaded: true,
 						response: RESPONSE,
 						pages: {
-							prev: {from: 3},
-							next: {from: 9},
-							all: [{from: 0}, {from: 3}, {from: 6}, {from: 9}]
+							prev: {from: 3, hidden: false, edgeHidden: false},
+							next: {from: 9, hidden: false, edgeHidden: false},
+							all: [{from: 0, hidden: false, edgeHidden: false}, {from: 3, hidden: false, edgeHidden: false},
+								{from: 6, hidden: false, edgeHidden: false}, {from: 9, hidden: false, edgeHidden: false}]
+						}
+					});
+				}));
+				it("should NOT mark pages as hidden when page count doesn't exceed the maximum", inject(function() {
+					var RESPONSE = {
+						navigation: {from: 6, max: 3, count: 12},
+						data: []
+					};
+					SeSearchHelperService.handleSearch($scope, sourceFunc, holder, {maximumNumberOfPages: 4});
+					$scope.$digest();
+					deferred.resolve(RESPONSE);
+					$scope.$digest();
+					expect(holder.searchResults).toEqual({
+						loaded: true,
+						response: RESPONSE,
+						pages: {
+							prev: {from: 3, hidden: false, edgeHidden: false},
+							next: {from: 9, hidden: false, edgeHidden: false},
+							all: [{from: 0, hidden: false, edgeHidden: false}, {from: 3, hidden: false, edgeHidden: false},
+								{from: 6, hidden: false, edgeHidden: false}, {from: 9, hidden: false, edgeHidden: false}]
+						}
+					});
+				}));
+				it("should mark pages only before last as hidden when page count exceeds the maximum - first page", inject(function() {
+					var RESPONSE = {
+						navigation: {from: 0, max: 3, count: 21},
+						data: []
+					};
+					SeSearchHelperService.handleSearch($scope, sourceFunc, holder, {maximumNumberOfPages: 4});
+					$scope.$digest();
+					deferred.resolve(RESPONSE);
+					$scope.$digest();
+					expect(holder.searchResults).toEqual({
+						loaded: true,
+						response: RESPONSE,
+						pages: {
+							next: {from: 3, hidden: false, edgeHidden: false},
+							all: [{from: 0, hidden: false, edgeHidden: false}, {from: 3, hidden: false, edgeHidden: false},
+									{from: 6, hidden: true, edgeHidden: true}, {from: 9, hidden: true, edgeHidden: false},
+									{from: 12, hidden: true, edgeHidden: false},
+									{from: 15, hidden: true, edgeHidden: false}, {from: 18, hidden: false, edgeHidden: false}]
+						}
+					});
+				}));
+				it("should mark pages only before last as hidden - second page", inject(function() {
+					var RESPONSE = {
+						navigation: {from: 3, max: 3, count: 21},
+						data: []
+					};
+					SeSearchHelperService.handleSearch($scope, sourceFunc, holder, {maximumNumberOfPages: 4});
+					$scope.$digest();
+					deferred.resolve(RESPONSE);
+					$scope.$digest();
+					expect(holder.searchResults).toEqual({
+						loaded: true,
+						response: RESPONSE,
+						pages: {
+							prev: {from: 0, hidden: false, edgeHidden: false},
+							next: {from: 6, hidden: false, edgeHidden: false},
+							all: [{from: 0, hidden: false, edgeHidden: false}, {from: 3, hidden: false, edgeHidden: false},
+								{from: 6, hidden: false, edgeHidden: false}, {from: 9, hidden: true, edgeHidden: true},
+								{from: 12, hidden: true, edgeHidden: false}, {from: 15, hidden: true, edgeHidden: false},
+								{from: 18, hidden: false, edgeHidden: false}]
+						}
+					});
+				}));
+				it("should mark pages only before last as hidden - third page", inject(function() {
+					var RESPONSE = {
+						navigation: {from: 6, max: 3, count: 21},
+						data: []
+					};
+					SeSearchHelperService.handleSearch($scope, sourceFunc, holder, {maximumNumberOfPages: 4});
+					$scope.$digest();
+					deferred.resolve(RESPONSE);
+					$scope.$digest();
+					expect(holder.searchResults).toEqual({
+						loaded: true,
+						response: RESPONSE,
+						pages: {
+							prev: {from: 3, hidden: false, edgeHidden: false},
+							next: {from: 9, hidden: false, edgeHidden: false},
+							all: [{from: 0, hidden: false, edgeHidden: false}, {from: 3, hidden: false, edgeHidden: false},
+								{from: 6, hidden: false, edgeHidden: false}, {from: 9, hidden: false, edgeHidden: false},
+								{from: 12, hidden: true, edgeHidden: true},
+								{from: 15, hidden: true, edgeHidden: false}, {from: 18, hidden: false, edgeHidden: false}]
+						}
+					});
+				}));
+				it("should mark pages both after first and before last as hidden - forth page", inject(function() {
+					var RESPONSE = {
+						navigation: {from: 9, max: 3, count: 21},
+						data: []
+					};
+					SeSearchHelperService.handleSearch($scope, sourceFunc, holder, {maximumNumberOfPages: 4});
+					$scope.$digest();
+					deferred.resolve(RESPONSE);
+					$scope.$digest();
+					expect(holder.searchResults).toEqual({
+						loaded: true,
+						response: RESPONSE,
+						pages: {
+							prev: {from: 6, hidden: false, edgeHidden: false},
+							next: {from: 12, hidden: false, edgeHidden: false},
+							all: [{from: 0, hidden: false, edgeHidden: false}, {from: 3, hidden: true, edgeHidden: true},
+								{from: 6, hidden: false, edgeHidden: false}, {from: 9, hidden: false, edgeHidden: false},
+								{from: 12, hidden: false, edgeHidden: false}, {from: 15, hidden: true, edgeHidden: true},
+								{from: 18, hidden: false, edgeHidden: false}]
+						}
+					});
+				}));
+				it("should mark pages only after first as hidden - last page", inject(function() {
+					var RESPONSE = {
+						navigation: {from: 18, max: 3, count: 21},
+						data: []
+					};
+					SeSearchHelperService.handleSearch($scope, sourceFunc, holder, {maximumNumberOfPages: 4});
+					$scope.$digest();
+					deferred.resolve(RESPONSE);
+					$scope.$digest();
+					expect(holder.searchResults).toEqual({
+						loaded: true,
+						response: RESPONSE,
+						pages: {
+							prev: {from: 15, hidden: false, edgeHidden: false},
+							all: [{from: 0, hidden: false, edgeHidden: false}, {from: 3, hidden: true, edgeHidden: true},
+								{from: 6, hidden: true, edgeHidden: false}, {from: 9, hidden: true, edgeHidden: false},
+								{from: 12, hidden: true, edgeHidden: false}, {from: 15, hidden: false, edgeHidden: false},
+								{from: 18, hidden: false, edgeHidden: false}]
+						}
+					});
+				}));
+				it("should mark pages only after first as hidden - second to last page", inject(function() {
+					var RESPONSE = {
+						navigation: {from: 15, max: 3, count: 21},
+						data: []
+					};
+					SeSearchHelperService.handleSearch($scope, sourceFunc, holder, {maximumNumberOfPages: 4});
+					$scope.$digest();
+					deferred.resolve(RESPONSE);
+					$scope.$digest();
+					expect(holder.searchResults).toEqual({
+						loaded: true,
+						response: RESPONSE,
+						pages: {
+							prev: {from: 12, hidden: false, edgeHidden: false},
+							next: {from: 18, hidden: false, edgeHidden: false},
+							all: [{from: 0, hidden: false, edgeHidden: false}, {from: 3, hidden: true, edgeHidden: true},
+									{from: 6, hidden: true, edgeHidden: false}, {from: 9, hidden: true, edgeHidden: false},
+									{from: 12, hidden: false, edgeHidden: false}, {from: 15, hidden: false, edgeHidden: false},
+									{from: 18, hidden: false, edgeHidden: false}]
+						}
+					});
+				}));
+				it("should not mark pages as hidden if start and end buffers are large enough", inject(function() {
+					var RESPONSE = {
+						navigation: {from: 15, max: 3, count: 21},
+						data: []
+					};
+					SeSearchHelperService.handleSearch($scope, sourceFunc, holder, {numberOfPagesAtStart: 3, numberOfPagesAtEnd: 3});
+					$scope.$digest();
+					deferred.resolve(RESPONSE);
+					$scope.$digest();
+					expect(holder.searchResults).toEqual({
+						loaded: true,
+						response: RESPONSE,
+						pages: {
+							prev: {from: 12, hidden: false, edgeHidden: false},
+							next: {from: 18, hidden: false, edgeHidden: false},
+							all: [{from: 0, hidden: false, edgeHidden: false}, {from: 3, hidden: false, edgeHidden: false},
+									{from: 6, hidden: false, edgeHidden: false}, {from: 9, hidden: false, edgeHidden: false},
+									{from: 12, hidden: false, edgeHidden: false}, {from: 15, hidden: false, edgeHidden: false},
+									{from: 18, hidden: false, edgeHidden: false}]
+						}
+					});
+				}));
+				it("should not mark pages as hidden if middle buffer is large enough", inject(function() {
+					var RESPONSE = {
+						navigation: {from: 15, max: 3, count: 21},
+						data: []
+					};
+					SeSearchHelperService.handleSearch($scope, sourceFunc, holder, {bufferOfCurrentPage: 5});
+					$scope.$digest();
+					deferred.resolve(RESPONSE);
+					$scope.$digest();
+					expect(holder.searchResults).toEqual({
+						loaded: true,
+						response: RESPONSE,
+						pages: {
+							prev: {from: 12, hidden: false, edgeHidden: false},
+							next: {from: 18, hidden: false, edgeHidden: false},
+							all: [{from: 0, hidden: false, edgeHidden: false}, {from: 3, hidden: false, edgeHidden: false},
+									{from: 6, hidden: false, edgeHidden: false}, {from: 9, hidden: false, edgeHidden: false},
+									{from: 12, hidden: false, edgeHidden: false}, {from: 15, hidden: false, edgeHidden: false},
+									{from: 18, hidden: false, edgeHidden: false}]
 						}
 					});
 				}));
