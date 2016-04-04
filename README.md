@@ -29,7 +29,8 @@ It is used with ui-router - parameters are saved and load from URL.
 # Dependencies:
  - Lodash
  - Restangular - structure with metadata (results count, limit, etc.)- to list
- - ui router - store/load params from the url
+ - ui router - store/load params from the url:
+  - see https://github.com/setelis/angular-se-search/issues/7 #7 URL is broken when navigating to page with query params - so until ui-router 0.2.19 release - we must use version 0.2.15 ( https://github.com/angular-ui/ui-router/issues/2614 )
  - angular-animate, optional
 
 # For developers:
