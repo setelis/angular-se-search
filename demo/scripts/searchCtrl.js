@@ -13,7 +13,7 @@ angular.module("seSearchDemoApp", ["seSearch", "restangular", "ui.router"]).cont
 	"use strict";
 
 	$stateProvider.state("search", {
-		url: "?from&max&q&enabled",
+		url: "?from&max&q&enabled&orderby",
 		params: {
 			from: {
 				value: "0",
@@ -25,7 +25,8 @@ angular.module("seSearchDemoApp", ["seSearch", "restangular", "ui.router"]).cont
 			},
 			// used in SeSearchHelperService.handleSearch() - see _.pick and _.keys
 			q: undefined,
-			enabled: undefined
+			enabled: undefined,
+			orderby: undefined
 		},
 		reloadOnSearch: false,
 		views: {
