@@ -23,6 +23,8 @@ It is used with ui-router - parameters are saved and load from URL.
    - show paging ```<div data-se-search-paging="searchCtrl.searchResults"></div>```
  - optionally you can add waiter (using angular-se-ajax): data-se-loading="searchCtrl.searchResults.loaded"
  - optionally you can add animation to table and rows: ```<table class="table se-animation-show" data-ng-hide="searchCtrl.searchResults.response.length === 0">``` and ```<tr data-ng-repeat="..." class="se-animation-showhide">``` - see http://setelis.github.io/angular-se-notifications/demo for animation samples
+ - order by can be added using: ```<th data-se-search-order-by="username" data-se-search-order-by-model="searchCtrl.filter.orderby">username</th>``` - every time header is clicked - new request is made
+ - you can add css for ordering styling (see demo - http://setelis.github.io/angular-se-search/demo/ )
 
  - TODO see demo http://setelis.github.io/angular-se-search/demo/
 

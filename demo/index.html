@@ -4,6 +4,29 @@
 		<title>seSearchDemoApp</title>
 
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/css/bootstrap.css" />
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+		<style>
+			.seSearchOrderBy {
+				font: normal normal normal 14px/1 FontAwesome;
+				font-size: inherit;
+				text-rendering: auto;
+				-webkit-font-smoothing: antialiased;
+				-moz-osx-font-smoothing: grayscale;
+				cursor: pointer;
+			}
+			.seSearchOrderBy:after{
+				content: "\f0dc";
+				color: #aaa;
+			}
+			.seSearchOrderByDescending:after{
+				content: "\f0d7";
+				color: black;
+			}
+			.seSearchOrderByAscending:after {
+				content: "\f0d8";
+				color: black;
+			}
+		</style>
 	</head>
 	<body>
 		See network activity when you stop typing. Paging is always on page 1 because server is mocked by apiary.
@@ -16,10 +39,10 @@
 				<table class="table se-animation-show" data-ng-hide="searchCtrl.searchResults.response.length === 0">
 					<thead>
 						<tr>
-							<th>username</th>
-							<th>firstName</th>
-							<th>lastName</th>
-							<th>enabled</th>
+							<th data-se-search-order-by="username" data-se-search-order-by-model="searchCtrl.filter.orderby">username</th>
+							<th data-se-search-order-by="firstName" data-se-search-order-by-model="searchCtrl.filter.orderby">firstName</th>
+							<th data-se-search-order-by="lastName" data-se-search-order-by-model="searchCtrl.filter.orderby">lastName</th>
+							<th data-se-search-order-by="enabled" data-se-search-order-by-model="searchCtrl.filter.orderby">enabled</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -49,6 +72,7 @@
 		<script src="../src/seSearchHelperService.js"></script>
 		<script src="../src/seSearchPagingDirective.js"></script>
 		<script src="../src/seSearchRestangularResponse.js"></script>
+		<script src="../src/seSearchOrderByDirective.js"></script>
 		<script src="../gen/seSearchHtml.js"></script>
 
 		<script src="scripts/searchCtrl.js"></script>

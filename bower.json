@@ -1,6 +1,6 @@
 {
   "name": "angular-se-search",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "dependencies": {
     "angular": "~1.4.3",
     "lodash": "~3.10.1",
@@ -21,13 +21,16 @@
      "src/seSearchHelperService.js",
      "src/seSearchPagingDirective.js",
      "src/seSearchRestangularResponse.js",
+     "src/seSearchOrderByDirective.js",
      "gen/seSearchHtml.js"
   ],
 
   "keywords": [
     "angular",
     "search",
-    "paging"
+    "paging",
+    "sort",
+    "order"
   ],
   "license": "MIT",
   "ignore": [
