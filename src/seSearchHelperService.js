@@ -72,7 +72,9 @@ angular.module("seSearch.helper", ["ui.router"]).provider("SeSearchHelperService
 					});
 				}
 				$scope.$watchCollection(function() {return $state.params;}, urlToFilter);
-				$scope.$watchCollection(function() {return holder[effectiveOptions.filterFieldName];}, fetch);
+				$scope.$watchCollection(function() {return holder[effectiveOptions.filterFieldName];},
+					_.throttle(fetch, effectiveOptions.throttleWait, {trailing: false})
+				);
 
 				return {
 					search: function() {
@@ -97,6 +99,7 @@ angular.module("seSearch.helper", ["ui.router"]).provider("SeSearchHelperService
 	var DEFAULT_OPTIONS = {
 		filterFieldName: "filter",
 		resultsFieldName: "searchResults",
+		throttleWait: 200,
 		paging: {
 			maximumNumberOfPages: 15,
 			numberOfPagesAtStart: 1,
