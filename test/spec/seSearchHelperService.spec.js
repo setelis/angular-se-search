@@ -147,6 +147,8 @@ describe("SeSearchHelperService", function() {
 				holder.filter[PARAMETER.name] = PARAMETER.value;
 
 				expect($state.params).not.toEqual(holder.filter);
+				// jasmine.clock().install(); does not work for lodash (see mockDate.js):
+				Date.$$incrementNow(201);
 
 				$scope.$digest();
 
@@ -159,7 +161,6 @@ describe("SeSearchHelperService", function() {
 						$$type: "DATE"
 					}
 				};
-
 				SeSearchHelperService.handleSearch($scope, sourceFunc, holder);
 				// url to model:
 				$scope.$digest();
@@ -171,7 +172,10 @@ describe("SeSearchHelperService", function() {
 				var expected = {some: holder.filter.some.toISOString()};
 
 				expect($state.params).not.toEqual(expected);
+				// jasmine.clock().install(); does not work for lodash (see mockDate.js):
+				Date.$$incrementNow(201);
 				$scope.$digest();
+
 				expect($state.params).toEqual(expected);
 			}));
 			it("should support custom filterFieldName (url>filter)", inject(function() {
